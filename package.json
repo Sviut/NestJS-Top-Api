@@ -1,8 +1,8 @@
 {
-  "name": "NestJS-Top-Api",
+  "name": "nest-top-api",
   "version": "0.0.1",
   "description": "",
-  "author": "Zheleznov Aleksandr",
+  "author": "",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
