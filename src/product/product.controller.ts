@@ -17,13 +17,13 @@ export class ProductController {
   async create(@Body() dto: Omit<ProductModel, '_id'>) {}
 
   @Get(':id')
-  async get(@Param() id: string) {}
+  async get(@Param('id') id: string) {}
 
   @Delete(':id')
-  async delete(@Param() id: string) {}
+  async delete(@Param('id') id: string) {}
 
   @Patch(':id')
-  async patch(@Param() id: string, @Body() dto: ProductModel) {}
+  async patch(@Param('id') id: string, @Body() dto: ProductModel) {}
 
   @HttpCode(200)
   @Post()
