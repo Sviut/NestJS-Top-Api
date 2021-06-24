@@ -1,5 +1,5 @@
 import { prop } from '@typegoose/typegoose'
-import { Base, TimeStamps } from '@typegoose/typegoose/lib/defaultClasses'
+import { TimeStamps, Base } from '@typegoose/typegoose/lib/defaultClasses'
 
 export interface AuthModel extends Base {}
 

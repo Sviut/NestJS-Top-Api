@@ -8,8 +8,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common'
-import { TopPageModel } from './top-page.model'
 import { FindTopPageDto } from './dto/find-top-page.dto'
+import { TopPageModel } from './top-page.model'
 
 @Controller('top-page')
 export class TopPageController {

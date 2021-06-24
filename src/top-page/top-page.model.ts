@@ -57,9 +57,9 @@ export class TopPageModel extends TimeStamps {
   @prop()
   seoText: string
 
+  @prop()
+  tagsTitle: string
+
   @prop({ type: () => [String] })
   tags: string[]
-
-  @prop()
-  tagsTitles: string
 }
