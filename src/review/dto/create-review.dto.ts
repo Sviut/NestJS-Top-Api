@@ -1,6 +1,7 @@
-import { IsNumber, IsString, Max, Min } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsString, Max, Min } from 'class-validator'
 
 export class CreateReviewDto {
+  @IsNotEmpty({ message: 'Название не может быть пустым' })
   @IsString()
   name: string
 
@@ -10,8 +11,8 @@ export class CreateReviewDto {
   @IsString()
   description: string
 
-  @Max(5)
-  @Min(1)
+  @Max(5, { message: 'Значение не может быть больше 5' })
+  @Min(1, { message: 'Значение не может быть меньше 1' })
   @IsNumber()
   rating: number
 
