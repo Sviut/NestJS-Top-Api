@@ -37,7 +37,6 @@ export class ReviewController {
     }
   }
 
-  @UseGuards(JwtAuthGuards)
   @Get('byProduct/:productId')
   async getByProduct(
     @Param('productId') productId: string,
