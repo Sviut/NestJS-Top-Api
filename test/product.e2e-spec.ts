@@ -57,6 +57,7 @@ describe('ProductController (e2e)', () => {
   it('/product/create (POST) - success', async (done) => {
     return request(app.getHttpServer())
       .post('/product/create')
+      .set('Authorization', 'Bearer ' + token)
       .send(testDto)
       .expect(201)
       .then(({ body }: request.Response) => {
@@ -69,6 +70,7 @@ describe('ProductController (e2e)', () => {
   it('/product/create (POST) - fail', () => {
     return request(app.getHttpServer())
       .post('/product/create')
+      .set('Authorization', 'Bearer ' + token)
       .send({
         title: '',
         price: 0,
@@ -79,6 +81,7 @@ describe('ProductController (e2e)', () => {
   it('/product/:id (GET) - success', async (done) => {
     return request(app.getHttpServer())
       .get('/product/' + createdId)
+      .set('Authorization', 'Bearer ' + token)
       .expect(200)
       .then(({ body }: request.Response) => {
         expect(body._id).toBe(createdId)
@@ -89,6 +92,7 @@ describe('ProductController (e2e)', () => {
   it('/product/:id (GET) - fail', async (done) => {
     return request(app.getHttpServer())
       .get('/product/' + new Types.ObjectId().toHexString())
+      .set('Authorization', 'Bearer ' + token)
       .expect(404, {
         statusCode: 404,
         message: PRODUCT_NOT_FOUND,

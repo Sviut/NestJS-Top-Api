@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common'
@@ -17,17 +18,20 @@ import { CreateProductDto } from './dto/create-product.dto'
 import { ProductService } from './product.service'
 import { PRODUCT_NOT_FOUND } from './product.constants'
 import { IdValidationPipe } from '../pipes/api-validation.pipes'
+import { JwtAuthGuards } from '../auth/guards/jwt.guards'
 
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  @UseGuards(JwtAuthGuards)
   @UsePipes(new ValidationPipe())
   @Post('create')
   async create(@Body() dto: CreateProductDto) {
     return this.productService.create(dto)
   }
 
+  @UseGuards(JwtAuthGuards)
   @Get(':id')
   async get(@Param('id', IdValidationPipe) id: string) {
     const product = await this.productService.findById(id)
@@ -37,6 +41,7 @@ export class ProductController {
     return product
   }
 
+  @UseGuards(JwtAuthGuards)
   @Delete(':id')
   async delete(@Param('id', IdValidationPipe) id: string) {
     const deletedProduct = await this.productService.deleteById(id)
@@ -45,6 +50,7 @@ export class ProductController {
     }
   }
 
+  @UseGuards(JwtAuthGuards)
   @Patch(':id')
   async patch(
     @Param('id', IdValidationPipe) id: string,
