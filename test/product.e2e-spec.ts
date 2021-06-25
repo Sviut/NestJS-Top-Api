@@ -2,27 +2,40 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from './../src/app.module'
-import { CreateReviewDto } from '../src/review/dto/create-review.dto'
 import { Types, disconnect } from 'mongoose'
-import { REVIEW_NOT_FOUND } from '../src/review/review.constants'
 import { AuthDto } from '../src/auth/dto/auth.dto'
-
-const productId = new Types.ObjectId().toHexString()
+import { CreateProductDto } from '../src/product/dto/create-product.dto'
+import { PRODUCT_NOT_FOUND } from '../src/product/product.constants'
 
 const loginDto: AuthDto = {
   login: 'a@a.1',
   password: '1',
 }
 
-const testDto: CreateReviewDto = {
-  name: 'Тест',
-  title: 'Заголовок',
-  description: 'Описание тестовое',
-  rating: 5,
-  productId,
+const testDto: CreateProductDto = {
+  advantages: 'Преимущества продукта',
+  categories: ['тест'],
+  description: 'Описание проукта',
+  characteristics: [
+    {
+      name: 'Характеристика 1',
+      value: '1',
+    },
+    {
+      name: 'Характеристика 2',
+      value: '2',
+    },
+  ],
+  credit: 10,
+  disAdvantages: 'Недостатки продукта',
+  image: '2.png',
+  price: 100,
+  title: 'Мой продукт',
+  tags: ['тег1'],
+  oldPrice: 120,
 }
 
-describe('ReviewController (e2e)', () => {
+describe('ProductController (e2e)', () => {
   let app: INestApplication
   let createdId: string
   let token: string
@@ -41,9 +54,9 @@ describe('ReviewController (e2e)', () => {
     token = body.access_token
   })
 
-  it('/review/create (POST) - success', async (done) => {
+  it('/product/create (POST) - success', async (done) => {
     return request(app.getHttpServer())
-      .post('/review/create')
+      .post('/product/create')
       .send(testDto)
       .expect(201)
       .then(({ body }: request.Response) => {
@@ -53,51 +66,52 @@ describe('ReviewController (e2e)', () => {
       })
   })
 
-  it('/review/create (POST) - fail', () => {
+  it('/product/create (POST) - fail', () => {
     return request(app.getHttpServer())
-      .post('/review/create')
+      .post('/product/create')
       .send({
-        ...testDto,
-        rating: 0,
-        name: '',
+        title: '',
+        price: 0,
       })
       .expect(400)
   })
 
-  it('/review/byProduct/:productId (GET) - success', async (done) => {
+  it('/product/:id (GET) - success', async (done) => {
     return request(app.getHttpServer())
-      .get('/review/byProduct/' + productId)
+      .get('/product/' + createdId)
       .expect(200)
       .then(({ body }: request.Response) => {
-        expect(body.length).toBe(1)
+        expect(body._id).toBe(createdId)
         done()
       })
   })
 
-  it('/review/byProduct/:productId (GET) - fail', async (done) => {
+  it('/product/:id (GET) - fail', async (done) => {
     return request(app.getHttpServer())
-      .get('/review/byProduct/' + new Types.ObjectId().toHexString())
-      .expect(200)
-      .then(({ body }: request.Response) => {
-        expect(body.length).toBe(0)
-        done()
+      .get('/product/' + new Types.ObjectId().toHexString())
+      .expect(404, {
+        statusCode: 404,
+        message: PRODUCT_NOT_FOUND,
+        error: 'Not Found',
       })
+      .then(() => done())
   })
 
-  it('/review/:id (DELETE) - success', () => {
+  it('/product/:id (DELETE) - success', () => {
     return request(app.getHttpServer())
-      .delete('/review/' + createdId)
+      .delete('/product/' + createdId)
       .set('Authorization', 'Bearer ' + token)
       .expect(200)
   })
 
-  it('/review/:id (DELETE) - fail', () => {
+  it('/product/:id (DELETE) - fail', () => {
     return request(app.getHttpServer())
-      .delete('/review/' + new Types.ObjectId().toHexString())
+      .delete('/product/' + new Types.ObjectId().toHexString())
       .set('Authorization', 'Bearer ' + token)
       .expect(404, {
         statusCode: 404,
-        message: REVIEW_NOT_FOUND,
+        message: PRODUCT_NOT_FOUND,
+        error: 'Not Found',
       })
   })
 
