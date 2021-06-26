@@ -6,9 +6,10 @@ import { ReviewModule } from './review/review.module'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypegooseModule } from 'nestjs-typegoose'
 import { getMongoConfig } from './configs/mongo.config'
-import { FilesModule } from './files/files.module';
-import { SitemapModule } from './sitemap/sitemap.module';
-import { TelegramModule } from './telegram/telegram.module';
+import { FilesModule } from './files/files.module'
+import { SitemapModule } from './sitemap/sitemap.module'
+import { TelegramModule } from './telegram/telegram.module'
+import { getTelegramConfig } from './configs/telegram.config'
 
 @Module({
   imports: [
@@ -24,7 +25,11 @@ import { TelegramModule } from './telegram/telegram.module';
     ReviewModule,
     FilesModule,
     SitemapModule,
-    TelegramModule,
+    TelegramModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: getTelegramConfig,
+    }),
   ],
 })
 export class AppModule {}
