@@ -1,8 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
-import { AppModule } from './../src/app.module'
+import { AppModule } from '../src/app.module'
 import { CreateReviewDto } from '../src/review/dto/create-review.dto'
+// @ts-ignore
 import { Types, disconnect } from 'mongoose'
 import { REVIEW_NOT_FOUND } from '../src/review/review.constants'
 import { AuthDto } from '../src/auth/dto/auth.dto'

@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing'
 import { INestApplication } from '@nestjs/common'
 import * as request from 'supertest'
 import { AppModule } from './../src/app.module'
+// @ts-ignore
 import { disconnect } from 'mongoose'
 import { AuthDto } from '../src/auth/dto/auth.dto'
 
