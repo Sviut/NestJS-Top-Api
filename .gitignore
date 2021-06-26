@@ -33,5 +33,5 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#DOCKER
-/mongo-data-4.4
+#DOCKER MONGO
+/mongoDB/mongo-data-4.4
